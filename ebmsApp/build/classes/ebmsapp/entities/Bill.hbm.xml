@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 d?c. 2019 11:00:37 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ebmsapp.entities.Bill" table="bill" catalog="ebms_db" optimistic-lock="version">
+        <id name="idbill" type="java.lang.Integer">
+            <column name="idbill" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="client" class="ebmsapp.entities.Client" fetch="select">
+            <column name="client_id" />
+        </many-to-one>
+        <property name="billNumber" type="string">
+            <column name="bill_number" length="45" not-null="true" unique="true" />
+        </property>
+        <property name="amount" type="double">
+            <column name="Amount" precision="22" scale="0" not-null="true" />
+        </property>
+        <property name="dueDate" type="date">
+            <column name="due_date" length="10" not-null="true" />
+        </property>
+        <property name="billDate" type="date">
+            <column name="bill_date" length="10" not-null="true" />
+        </property>
+        <property name="unitConsumed" type="int">
+            <column name="unit_consumed" not-null="true" />
+        </property>
+        <property name="process" type="string">
+            <column name="process" length="6" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

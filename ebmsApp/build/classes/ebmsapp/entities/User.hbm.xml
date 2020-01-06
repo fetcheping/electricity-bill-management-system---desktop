@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 d?c. 2019 11:00:37 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ebmsapp.entities.User" table="user" catalog="ebms_db" optimistic-lock="version">
+        <id name="iduser" type="java.lang.Integer">
+            <column name="iduser" />
+            <generator class="identity" />
+        </id>
+        <property name="fullname" type="string">
+            <column name="fullname" length="45" not-null="true" />
+        </property>
+        <property name="matricule" type="string">
+            <column name="matricule" length="45" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="45" not-null="true" />
+        </property>
+        <property name="password" type="string">
+            <column name="password" length="45" not-null="true" />
+        </property>
+        <property name="type" type="string">
+            <column name="type" length="45" not-null="true" />
+        </property>
+        <property name="picture" type="string">
+            <column name="picture" length="45" />
+        </property>
+    </class>
+</hibernate-mapping>

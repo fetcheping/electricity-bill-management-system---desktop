@@ -1,0 +1,66 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 d?c. 2019 11:00:37 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ebmsapp.entities.Client" table="client" catalog="ebms_db" optimistic-lock="version">
+        <id name="idclient" type="java.lang.Integer">
+            <column name="idclient" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="cities" class="ebmsapp.entities.Cities" fetch="select">
+            <column name="cities_id"/>
+        </many-to-one>
+        <property name="firstname" type="string">
+            <column name="firstname" length="45" not-null="true" />
+        </property>
+        <property name="lastname" type="string">
+            <column name="lastname" length="45" />
+        </property>
+        <property name="birthdate" type="date">
+            <column name="birthdate" length="10" />
+        </property>
+        <property name="profession" type="string">
+            <column name="profession" length="45" not-null="true" />
+        </property>
+        <property name="email" type="string">
+            <column name="email" length="45" />
+        </property>
+        <property name="gender" type="string">
+            <column name="gender" length="6" not-null="true" />
+        </property>
+        <property name="phonenumber" type="string">
+            <column name="phonenumber" length="45" not-null="true" />
+        </property>
+        <property name="username" type="string">
+            <column name="username" length="45" not-null="true" />
+        </property>
+        <property name="address" type="string">
+            <column name="address" length="45" not-null="true" />
+        </property>
+        <property name="pobox" type="string">
+            <column name="pobox" length="45" />
+        </property>
+        <property name="picture" type="string">
+            <column name="picture" length="45" />
+        </property>
+        <set name="consumptions" table="consumption" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="client_id" not-null="true" />
+            </key>
+            <one-to-many class="ebmsapp.entities.Consumption" />
+        </set>
+        <set name="contracts" table="contract" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="client_id" not-null="true" />
+            </key>
+            <one-to-many class="ebmsapp.entities.Contract" />
+        </set>
+        <set name="bills" table="bill" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="client_id" not-null="true" />
+            </key>
+            <one-to-many class="ebmsapp.entities.Bill" />
+        </set>
+    </class>
+</hibernate-mapping>

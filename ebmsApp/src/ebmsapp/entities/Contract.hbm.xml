@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 d?c. 2019 11:00:37 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ebmsapp.entities.Contract" table="contract" catalog="ebms_db" optimistic-lock="version">
+        <id name="idcontract" type="java.lang.Integer">
+            <column name="idcontract" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="client" class="ebmsapp.entities.Client" fetch="select">
+            <column name="client_id"/>
+        </many-to-one>
+        <property name="contractNumber" type="string">
+            <column name="contract_number" length="45" />
+        </property>
+        <property name="contractDate" type="date">
+            <column name="contract_date" length="10" />
+        </property>
+        <property name="clientCategorie" type="string">
+            <column name="client_categorie" length="45" />
+        </property>
+        <property name="meterNumber" type="java.lang.Float">
+            <column name="meter_number" precision="12" scale="0" />
+        </property>
+    </class>
+</hibernate-mapping>

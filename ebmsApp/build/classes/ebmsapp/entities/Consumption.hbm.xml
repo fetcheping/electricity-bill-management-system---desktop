@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 27 d?c. 2019 11:00:37 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="ebmsapp.entities.Consumption" table="consumption" catalog="ebms_db" optimistic-lock="version">
+        <id name="idconsumption" type="java.lang.Integer">
+            <column name="idconsumption" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="client" class="ebmsapp.entities.Client" fetch="select">
+            <column name="client_id" />
+        </many-to-one>
+        <property name="date" type="date">
+            <column name="date" length="10" not-null="true" />
+        </property>
+        <property name="previousConsumed" type="int">
+            <column name="previous_consumed" not-null="true" />
+        </property>
+        <property name="consumed" type="int">
+            <column name="consumed" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>

@@ -17,6 +17,5 @@ public interface IBill {
     public void delete(Bill bill);
     public void update(Bill bill);
     public List findAll();
-    public List find();
     public void print();
 }

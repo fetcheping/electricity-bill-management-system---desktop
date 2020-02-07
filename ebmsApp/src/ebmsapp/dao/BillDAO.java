@@ -45,9 +45,6 @@ public class BillDAO implements IBill{
         try {
             
              tx = session.beginTransaction();
-             
-             UserDAO u = new UserDAO();
-            // User l = u.login(clt, clt)
             
              List<Client> ls = session.createQuery("FROM Client as clt WHERE clt.firstname = ?").setString(0, clt).list();
              
@@ -91,7 +88,7 @@ public class BillDAO implements IBill{
     @Override
     public List findAll() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    Session session = Factory.openSession();
+        Session session = Factory.openSession();
          Transaction tx = null;
        
         try {
@@ -116,9 +113,23 @@ public class BillDAO implements IBill{
         return null;
     }
 
-    @Override
-    public List find() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
+    public Bill findone(String value) {
+        
+         Session session = Factory.openSession();
+         Transaction t = null;
+         
+         try {
+             t = session.beginTransaction();
+             Bill cl = (Bill)session.createQuery("From Bill WHERE billNumber = ?").setString(0, value).uniqueResult();
+             return cl;
+        } catch (HibernateException e) {
+            if(t!=null) t.rollback();
+            e.printStackTrace();
+        }finally{
+             session.close();
+         }
+        return null;
     }
 
     @Override

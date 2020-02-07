@@ -130,9 +130,6 @@ public class Bill  implements java.io.Serializable {
         this.process = process;
     }
 
-
-
-
 }
 
 

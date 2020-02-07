@@ -132,5 +132,24 @@ public class ClientDAO implements IClient{
          }
         return null;
     }
+    
+    public Client findone(String value) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+         Session session = Factory.openSession();
+         Transaction t = null;
+         
+         try {
+             t = session.beginTransaction();
+             Client cl = (Client)session.createQuery("From Client WHERE firstname = ?").setString(0, value).uniqueResult();
+             return cl;
+        } catch (HibernateException e) {
+            if(t!=null) t.rollback();
+            e.printStackTrace();
+        }finally{
+             session.close();
+         }
+        return null;
+    }
    
 }

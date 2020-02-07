@@ -26,8 +26,6 @@ public class UserDAO implements IUser{
         Factory = new Configuration().configure().buildSessionFactory();
     }
     
-    
-
     @Override
     public void save(User user) {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -83,6 +81,24 @@ public class UserDAO implements IUser{
             }finally{
                 session.close();
             }
+    }
+    
+     public User findone(String value) {
+        
+         Session session = Factory.openSession();
+         Transaction t = null;
+         
+         try {
+             t = session.beginTransaction();
+             User user = (User)session.createQuery("From User WHERE username = ?").setString(0, value).uniqueResult();
+             return user;
+        } catch (HibernateException e) {
+            if(t!=null) t.rollback();
+            e.printStackTrace();
+        }finally{
+             session.close();
+         }
+        return null;
     }
     
 }

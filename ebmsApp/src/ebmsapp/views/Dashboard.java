@@ -6,6 +6,7 @@
 package ebmsapp.views;
 
 
+import com.mysql.jdbc.Connection;
 import ebmsapp.dao.BillDAO;
 import ebmsapp.dao.CityDAO;
 import ebmsapp.dao.ClientDAO;
@@ -19,17 +20,44 @@ import ebmsapp.entities.Client;
 import ebmsapp.entities.Consumption;
 import ebmsapp.entities.Contract;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Random;
 import java.util.ResourceBundle;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javafx.scene.input.DragEvent;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumnModel;
+import net.sf.jasperreports.engine.JREmptyDataSource;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JasperCompileManager;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperFillManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.JasperReport;
+import net.sf.jasperreports.engine.design.JRDesignQuery;
+import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.xml.JRXmlLoader;
+import net.sf.jasperreports.view.JasperViewer;
+
+
+
+
+
+
 
 /**
  *
@@ -40,6 +68,9 @@ public class Dashboard extends javax.swing.JFrame {
     /**
      * Creates new form Dashboard
      */
+    
+    Connection cn = null;
+    
     public Dashboard() {
         initComponents();
         viewHome.setVisible(true);
@@ -71,6 +102,15 @@ public class Dashboard extends javax.swing.JFrame {
         txtCtrNumber2 = new javax.swing.JTextField();
         jPanel32 = new javax.swing.JPanel();
         jTextField18 = new javax.swing.JTextField();
+        jPopupMenu1 = new javax.swing.JPopupMenu();
+        jMenuIDelete = new javax.swing.JMenuItem();
+        jPopupMenu2 = new javax.swing.JPopupMenu();
+        jMenuDelete = new javax.swing.JMenuItem();
+        jMenuPrint = new javax.swing.JMenuItem();
+        jPopupMenu3 = new javax.swing.JPopupMenu();
+        deleteContract = new javax.swing.JMenuItem();
+        jPopupMenu4 = new javax.swing.JPopupMenu();
+        deleteConsumption = new javax.swing.JMenuItem();
         jMenu = new javax.swing.JPanel();
         kbtnClient = new keeptoo.KButton();
         kbtnHome = new keeptoo.KButton();
@@ -177,6 +217,7 @@ public class Dashboard extends javax.swing.JFrame {
         rdbEnglish = new javax.swing.JRadioButton();
         rdbFrench = new javax.swing.JRadioButton();
         rdbGerman = new javax.swing.JRadioButton();
+        jLabel5 = new javax.swing.JLabel();
         viewClient = new javax.swing.JPanel();
         jLabel10 = new javax.swing.JLabel();
         txtlastname = new javax.swing.JTextField();
@@ -280,6 +321,65 @@ public class Dashboard extends javax.swing.JFrame {
         );
 
         jTextField18.setText(bundle.getString("Dashboard.jTextField18.text")); // NOI18N
+
+        jMenuIDelete.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jMenuIDelete.setForeground(new java.awt.Color(204, 0, 0));
+        jMenuIDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete_16.png"))); // NOI18N
+        jMenuIDelete.setText(bundle.getString("Dashboard.jMenuIDelete.text")); // NOI18N
+        jMenuIDelete.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jMenuIDeleteMouseClicked(evt);
+            }
+        });
+        jMenuIDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuIDeleteActionPerformed(evt);
+            }
+        });
+        jPopupMenu1.add(jMenuIDelete);
+
+        jMenuDelete.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jMenuDelete.setForeground(new java.awt.Color(204, 0, 51));
+        jMenuDelete.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete_16.png"))); // NOI18N
+        jMenuDelete.setText(bundle.getString("Dashboard.jMenuDelete.text")); // NOI18N
+        jMenuDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuDeleteActionPerformed(evt);
+            }
+        });
+        jPopupMenu2.add(jMenuDelete);
+
+        jMenuPrint.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        jMenuPrint.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/print_black_16.png"))); // NOI18N
+        jMenuPrint.setText(bundle.getString("Dashboard.jMenuPrint.text")); // NOI18N
+        jMenuPrint.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuPrintActionPerformed(evt);
+            }
+        });
+        jPopupMenu2.add(jMenuPrint);
+
+        deleteContract.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        deleteContract.setForeground(new java.awt.Color(204, 0, 0));
+        deleteContract.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete_16.png"))); // NOI18N
+        deleteContract.setText(bundle.getString("Dashboard.deleteContract.text")); // NOI18N
+        deleteContract.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteContractActionPerformed(evt);
+            }
+        });
+        jPopupMenu3.add(deleteContract);
+
+        deleteConsumption.setFont(new java.awt.Font("Times New Roman", 0, 14)); // NOI18N
+        deleteConsumption.setForeground(new java.awt.Color(204, 0, 0));
+        deleteConsumption.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/delete_16.png"))); // NOI18N
+        deleteConsumption.setText(bundle.getString("Dashboard.deleteConsumption.text")); // NOI18N
+        deleteConsumption.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                deleteConsumptionActionPerformed(evt);
+            }
+        });
+        jPopupMenu4.add(deleteConsumption);
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setBackground(new java.awt.Color(255, 255, 255));
@@ -554,6 +654,7 @@ public class Dashboard extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtableBill.setComponentPopupMenu(jPopupMenu2);
         jScrollPane3.setViewportView(jtableBill);
 
         jLabel28.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
@@ -628,7 +729,7 @@ public class Dashboard extends javax.swing.JFrame {
                         .addGap(239, 239, 239)
                         .addComponent(jLabel27, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewBillsLayout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap(28, Short.MAX_VALUE)
                 .addGroup(viewBillsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(viewBillsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                         .addComponent(txtSearchBill, javax.swing.GroupLayout.Alignment.LEADING)
@@ -682,8 +783,8 @@ public class Dashboard extends javax.swing.JFrame {
                 .addGap(3, 3, 3)
                 .addComponent(jPanel23, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 197, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(37, 37, 37))
+                .addComponent(jScrollPane3, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(74, 74, 74))
             .addGroup(viewBillsLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                 .addGroup(viewBillsLayout.createSequentialGroup()
                     .addGap(220, 220, 220)
@@ -759,6 +860,7 @@ public class Dashboard extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtableConsump.setComponentPopupMenu(jPopupMenu4);
         jScrollPane5.setViewportView(jtableConsump);
 
         javax.swing.GroupLayout jPanel26Layout = new javax.swing.GroupLayout(jPanel26);
@@ -951,6 +1053,7 @@ public class Dashboard extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtablecontract.setComponentPopupMenu(jPopupMenu3);
         jScrollPane2.setViewportView(jtablecontract);
 
         btnSaveContract.setText(bundle.getString("Dashboard.btnSaveContract.text")); // NOI18N
@@ -1298,6 +1401,11 @@ public class Dashboard extends javax.swing.JFrame {
                 kButton6MouseClicked(evt);
             }
         });
+        kButton6.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                kButton6ActionPerformed(evt);
+            }
+        });
 
         jLabel48.setFont(new java.awt.Font("Calibri", 0, 24)); // NOI18N
         jLabel48.setForeground(new java.awt.Color(102, 102, 102));
@@ -1317,7 +1425,6 @@ public class Dashboard extends javax.swing.JFrame {
         rdbFrench.setBackground(new java.awt.Color(255, 255, 255));
         rdbFrench.setFont(new java.awt.Font("Calibri", 3, 14)); // NOI18N
         rdbFrench.setText(bundle.getString("Dashboard.rdbFrench.text")); // NOI18N
-        rdbFrench.setEnabled(false);
         rdbFrench.addMouseListener(new java.awt.event.MouseAdapter() {
             public void mouseClicked(java.awt.event.MouseEvent evt) {
                 rdbFrenchMouseClicked(evt);
@@ -1332,6 +1439,8 @@ public class Dashboard extends javax.swing.JFrame {
                 rdbGermanActionPerformed(evt);
             }
         });
+
+        jLabel5.setText(bundle.getString("Dashboard.jLabel5.text")); // NOI18N
 
         javax.swing.GroupLayout viewSettingLayout = new javax.swing.GroupLayout(viewSetting);
         viewSetting.setLayout(viewSettingLayout);
@@ -1361,7 +1470,8 @@ public class Dashboard extends javax.swing.JFrame {
                             .addComponent(jLabel48, javax.swing.GroupLayout.PREFERRED_SIZE, 159, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(viewSettingLayout.createSequentialGroup()
                                 .addGap(21, 21, 21)
-                                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                                .addComponent(jLabel36, javax.swing.GroupLayout.PREFERRED_SIZE, 105, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addComponent(jLabel5))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGroup(viewSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewSettingLayout.createSequentialGroup()
@@ -1393,7 +1503,9 @@ public class Dashboard extends javax.swing.JFrame {
         viewSettingLayout.setVerticalGroup(
             viewSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(viewSettingLayout.createSequentialGroup()
-                .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(viewSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jLabel32, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel5))
                 .addGap(39, 39, 39)
                 .addGroup(viewSettingLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, viewSettingLayout.createSequentialGroup()
@@ -1613,6 +1725,9 @@ public class Dashboard extends javax.swing.JFrame {
         btnSaveClient.setText(bundle.getString("Dashboard.btnSaveClient.text")); // NOI18N
         btnSaveClient.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
         btnSaveClient.setkEndColor(new java.awt.Color(102, 102, 255));
+        btnSaveClient.setkHoverEndColor(new java.awt.Color(102, 102, 255));
+        btnSaveClient.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        btnSaveClient.setkHoverStartColor(new java.awt.Color(102, 102, 255));
         btnSaveClient.setkSelectedColor(new java.awt.Color(102, 102, 255));
         btnSaveClient.setkStartColor(new java.awt.Color(102, 102, 255));
         btnSaveClient.addActionListener(new java.awt.event.ActionListener() {
@@ -1621,9 +1736,13 @@ public class Dashboard extends javax.swing.JFrame {
             }
         });
 
+        btnCancelClient.setIcon(new javax.swing.ImageIcon(getClass().getResource("/icons/cancel_16.png"))); // NOI18N
         btnCancelClient.setText(bundle.getString("Dashboard.btnCancelClient.text")); // NOI18N
         btnCancelClient.setFont(new java.awt.Font("Times New Roman", 3, 14)); // NOI18N
         btnCancelClient.setkEndColor(new java.awt.Color(102, 102, 255));
+        btnCancelClient.setkHoverEndColor(new java.awt.Color(102, 102, 255));
+        btnCancelClient.setkHoverForeGround(new java.awt.Color(255, 255, 255));
+        btnCancelClient.setkHoverStartColor(new java.awt.Color(102, 102, 255));
         btnCancelClient.setkSelectedColor(new java.awt.Color(102, 102, 255));
         btnCancelClient.setkStartColor(new java.awt.Color(102, 102, 255));
 
@@ -1638,6 +1757,7 @@ public class Dashboard extends javax.swing.JFrame {
                 "Title 1", "Title 2", "Title 3", "Title 4"
             }
         ));
+        jtableclient.setComponentPopupMenu(jPopupMenu1);
         jScrollPane1.setViewportView(jtableclient);
 
         jLabel30.setFont(new java.awt.Font("Calibri", 0, 18)); // NOI18N
@@ -2183,7 +2303,11 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jLabel8MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel8MouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+        int v = JOptionPane.showConfirmDialog(null, "Are you sure to want to close the Application ??", "Confirm", JOptionPane.YES_NO_OPTION);
+        if(v == JOptionPane.YES_OPTION)
+        {
+           System.exit(0);
+        }
     }//GEN-LAST:event_jLabel8MouseClicked
 
     private void jLabel28MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel28MouseClicked
@@ -2216,7 +2340,13 @@ public class Dashboard extends javax.swing.JFrame {
 
     private void jLabel32MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jLabel32MouseClicked
         // TODO add your handling code here:
-        System.exit(0);
+        
+        int v = JOptionPane.showConfirmDialog(null, "Are you sure to want to close the Application ??", "Confirm", JOptionPane.YES_NO_OPTION);
+        if(v == JOptionPane.YES_OPTION)
+        {
+           System.exit(0);
+        }
+        
     }//GEN-LAST:event_jLabel32MouseClicked
 
     private void kButton6MouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_kButton6MouseClicked
@@ -2395,6 +2525,62 @@ public class Dashboard extends javax.swing.JFrame {
         kbtnClient.setText(r.getString("Dashboard.kbtnClient.text"));
         kbtnHome.setText(r.getString("Dashboard.kbtnHome.text"));
     }//GEN-LAST:event_rdbGermanActionPerformed
+
+    private void kButton6ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kButton6ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_kButton6ActionPerformed
+
+    private void jMenuIDeleteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jMenuIDeleteMouseClicked
+        // TODO add your handling code here: 
+    }//GEN-LAST:event_jMenuIDeleteMouseClicked
+
+    private void jMenuIDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuIDeleteActionPerformed
+        // TODO add your handling code here:
+         deleteClient();
+    }//GEN-LAST:event_jMenuIDeleteActionPerformed
+
+    private void jMenuDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuDeleteActionPerformed
+        // TODO add your handling code here:
+        
+        deleteBill();
+    }//GEN-LAST:event_jMenuDeleteActionPerformed
+
+    private void deleteContractActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteContractActionPerformed
+        // TODO add your handling code here:
+        
+        deleteContract();
+    }//GEN-LAST:event_deleteContractActionPerformed
+
+    private void deleteConsumptionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteConsumptionActionPerformed
+        // TODO add your handling code here:
+        
+        deleteConsumption();
+    }//GEN-LAST:event_deleteConsumptionActionPerformed
+
+    private void jMenuPrintActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuPrintActionPerformed
+        
+        try {
+            // TODO add your handling code here:
+            Class.forName("com.mysql.jdbc.Driver");
+            cn = (Connection) DriverManager.getConnection("jdbc:mysql://localhost:3306/ebms_db", "root", "");
+            InputStream in;
+            in = new FileInputStream(new File("D:\\TP Java\\electricity-bill-management-system---desktop\\ebmsApp\\src\\ebmsapp\\report\\ebmsBill.jrxml"));
+            JasperDesign jd = JRXmlLoader.load(in);
+            int index = jtableBill.getSelectedRow();
+            String billNumb = jtableBill.getValueAt(index, 0).toString();
+            String sql = "select * from bill where bill_number = "+billNumb;
+            JRDesignQuery newQuery = new JRDesignQuery();
+            newQuery.setText(sql);
+            jd.setQuery(newQuery);
+            JasperReport jr = JasperCompileManager.compileReport(jd);
+            HashMap param = new HashMap();
+            JasperPrint jp = JasperFillManager.fillReport(jr, param, cn);
+            JasperViewer.viewReport(jp, false);
+        } catch (Exception ex) {
+           JOptionPane.showMessageDialog(null, ex.getMessage());
+        } 
+        
+    }//GEN-LAST:event_jMenuPrintActionPerformed
     
     public void allMail(){
         ClientDAO clt = new ClientDAO();
@@ -2468,7 +2654,7 @@ public class Dashboard extends javax.swing.JFrame {
             cmbcity.addItem(obj.getName());
         }
     }
-     public void fillclientConsump(){
+    public void fillclientConsump(){
         ClientDAO c = new ClientDAO();
        
         for (Client obj : c.findAll()) {
@@ -2611,6 +2797,74 @@ public class Dashboard extends javax.swing.JFrame {
        
         }
     }
+    public void deleteClient()
+    {
+        ClientDAO clt = new ClientDAO();
+        try {
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if(result == JOptionPane.YES_OPTION)
+                    {
+                        int index = jtableclient.getSelectedRow();
+                        String firstname = jtableclient.getValueAt(index, 0).toString();
+                        Client client = clt.findone(firstname);
+                        clt.delete(client);
+                        loadDataClient();
+                    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+    public void deleteBill() {
+         BillDAO bil = new BillDAO();
+        try {
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if(result == JOptionPane.YES_OPTION)
+                    {
+                        int index = jtableBill.getSelectedRow();
+                        String firstname = jtableBill.getValueAt(index, 0).toString();
+                        Bill bill = bil.findone(firstname);
+                        bil.delete(bill);
+                        loadDataBill();
+                    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+    }
+    
+     public void deleteConsumption() {
+        ConsumptionDAO cons = new ConsumptionDAO();
+        try {
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if(result == JOptionPane.YES_OPTION)
+                    {
+                        int index = jtableConsump.getSelectedRow();
+                        String firstname = jtableConsump.getValueAt(index, 3).toString();
+                        Consumption consump = cons.findone(firstname);
+                        cons.delete(consump);
+                        loadConsumption();
+                    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+       } 
+     
+     public void deleteContract() {
+        ContractDAO contract = new ContractDAO();
+        try {
+            int result = JOptionPane.showConfirmDialog(null, "Are you sure?", "Confirm", JOptionPane.YES_NO_OPTION);
+                    if(result == JOptionPane.YES_OPTION)
+                    {
+                        int index = jtablecontract.getSelectedRow();
+                        String firstname = jtablecontract.getValueAt(index, 0).toString();
+                        Contract consump = contract.findone(firstname);
+                        contract.delete(consump);
+                        loadDataContract();
+                    }
+        } catch (Exception e) {
+            JOptionPane.showMessageDialog(null, e.getMessage());
+        }
+       } 
     /**
      * @param args the command line arguments
      */
@@ -2669,6 +2923,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JComboBox<String> cmbgender;
     private com.toedter.calendar.JDateChooser dateCon;
     private com.toedter.calendar.JDateChooser dateCtr;
+    private javax.swing.JMenuItem deleteConsumption;
+    private javax.swing.JMenuItem deleteContract;
     private javax.swing.Box.Filler filler1;
     private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
@@ -2712,10 +2968,14 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
     private javax.swing.JLabel jLabel48;
+    private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel7;
     private javax.swing.JLabel jLabel8;
     private javax.swing.JLabel jLabel9;
     private javax.swing.JPanel jMenu;
+    private javax.swing.JMenuItem jMenuDelete;
+    private javax.swing.JMenuItem jMenuIDelete;
+    private javax.swing.JMenuItem jMenuPrint;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel10;
     private javax.swing.JPanel jPanel11;
@@ -2751,6 +3011,10 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel8;
     private javax.swing.JPanel jPanel9;
     private javax.swing.JPasswordField jPasswordField1;
+    private javax.swing.JPopupMenu jPopupMenu1;
+    private javax.swing.JPopupMenu jPopupMenu2;
+    private javax.swing.JPopupMenu jPopupMenu3;
+    private javax.swing.JPopupMenu jPopupMenu4;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JScrollPane jScrollPane3;
@@ -2815,6 +3079,8 @@ public class Dashboard extends javax.swing.JFrame {
     private javax.swing.JPanel viewHome;
     private javax.swing.JPanel viewSetting;
     // End of variables declaration//GEN-END:variables
+
+    
 
 
     

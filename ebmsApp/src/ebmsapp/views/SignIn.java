@@ -283,6 +283,7 @@ public class SignIn extends javax.swing.JFrame {
         }else{
              Dashboard dash = new Dashboard();
              dash.setVisible(true);
+             
              this.setVisible(false);
         }
     }//GEN-LAST:event_btnsigninActionPerformed

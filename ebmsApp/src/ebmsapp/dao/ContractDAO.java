@@ -155,4 +155,22 @@ public class ContractDAO implements IContract{
          }
         return null;
     }   
+    
+     public Contract findone(String value) {
+        
+         Session session = Factory.openSession();
+         Transaction t = null;
+         
+         try {
+             t = session.beginTransaction();
+             Contract cl = (Contract)session.createQuery("From Contract WHERE contractNumber = ?").setString(0, value).uniqueResult();
+             return cl;
+        } catch (HibernateException e) {
+            if(t!=null) t.rollback();
+            e.printStackTrace();
+        }finally{
+             session.close();
+         }
+        return null;
+    }
 }

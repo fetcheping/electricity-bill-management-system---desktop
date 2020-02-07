@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="report name" pageWidth="842" pageHeight="700" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="f5156e28-0a27-47c9-b98b-b22b06758de0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[select * from bill]]>
+	</queryString>
+	<field name="idbill" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_number" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="Amount" class="java.lang.Double">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="due_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="bill_date" class="java.sql.Date">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="unit_consumed" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="process" class="java.lang.String">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="client_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<field name="user_id" class="java.lang.Integer">
+		<fieldDescription><![CDATA[]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="75" splitType="Stretch">
+			<staticText>
+				<reportElement x="20" y="22" width="21" height="53" forecolor="#CCCC00" uuid="842ab331-1766-48ec-b78b-f51c9aa71009"/>
+				<textElement textAlignment="Center">
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[E]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="40" y="22" width="100" height="53" forecolor="#009999" uuid="f02d5abb-9484-4d15-98e6-c3da9dcc9d51"/>
+				<textElement>
+					<font size="30"/>
+				</textElement>
+				<text><![CDATA[-BILL]]></text>
+			</staticText>
+			<ellipse>
+				<reportElement x="72" y="-20" width="658" height="20" forecolor="#CCCC00" backcolor="#009999" uuid="189ed240-7f3a-4c1a-beae-78ba9519084b"/>
+			</ellipse>
+			<staticText>
+				<reportElement x="419" y="2" width="100" height="20" uuid="55a6ee20-d700-4bda-85bf-31d6d309029b"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Electricity bill No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="472" y="55" width="61" height="20" backcolor="#009999" uuid="7761660c-7681-4334-843e-1a83729e9e09"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Category:]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="121" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="489" y="10" width="153" height="99" forecolor="#009999" backcolor="#CCCC00" uuid="86bf9920-76ee-4015-a9b2-747f7d031b8b"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="304" y="10" width="168" height="20" uuid="2ff9f7c2-4892-4911-9232-166de13b45cb"/>
+				<text><![CDATA[Meter No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="30" width="168" height="20" uuid="87720e55-1999-4dbf-b943-90ac330abdcf"/>
+				<text><![CDATA[Previous Meter No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="50" width="168" height="20" uuid="5318f147-ed91-4ba8-9cf8-873cb47fb3d4"/>
+				<text><![CDATA[Reading date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="70" width="68" height="20" uuid="5d2d2702-e99e-418c-8ae3-7aafa304511f"/>
+				<text><![CDATA[Billing date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="304" y="89" width="168" height="20" uuid="1f4ce6b8-cd4c-4f48-80f4-9772ef88203d"/>
+				<text><![CDATA[Group ID:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="30" width="127" height="20" uuid="db0f55be-d6f9-4739-8df9-59e057719423"/>
+				<text><![CDATA[Cliv LAND]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="50" width="127" height="20" uuid="42ce5230-e023-41c2-8e85-905decb33416"/>
+				<text><![CDATA[Contract No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="70" width="127" height="20" uuid="04457aa9-55b5-4142-9283-3ae0d8bc4abc"/>
+				<text><![CDATA[Tax No:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="11" width="151" height="20" forecolor="#009999" uuid="6dd7941a-7be2-4684-9504-86202f0c5b87"/>
+				<textElement textAlignment="Center">
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[Due date:]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="491" y="82" width="124" height="39" forecolor="#009999" uuid="3edc8975-83e8-459b-878f-7f29fb26752d"/>
+				<textElement textAlignment="Center"/>
+				<text><![CDATA[10 days after reception  date]]></text>
+			</staticText>
+		</band>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<rectangle radius="10">
+				<reportElement x="0" y="0" width="660" height="32" forecolor="#CCCC00" backcolor="#CCCC00" uuid="38874f46-238f-4dae-9d0e-8ba9e9d281bf"/>
+			</rectangle>
+			<staticText>
+				<reportElement x="13" y="12" width="59" height="20" forecolor="#009999" uuid="2d77b5e2-f226-4187-91fc-1f15c8c79ca9"/>
+				<text><![CDATA[Bill detail]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="158" y="12" width="90" height="20" forecolor="#009999" uuid="275d88e6-272a-4775-8a27-6c40ebcd2ba6"/>
+				<text><![CDATA[Previous reading]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="378" y="12" width="41" height="20" forecolor="#009999" uuid="87f8ac69-4aab-40c4-b437-57adc3dea8de"/>
+				<text><![CDATA[Coef]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="444" y="12" width="64" height="20" forecolor="#009999" uuid="da7ecbb4-7689-4147-a928-08b6c08225fb"/>
+				<text><![CDATA[Unit (KWH)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="533" y="12" width="25" height="20" forecolor="#009999" uuid="5f66d4ce-6ec3-4b79-acfc-c8491c25b924"/>
+				<text><![CDATA[Rate]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="596" y="12" width="46" height="20" forecolor="#009999" uuid="6bb86702-e90d-47a2-bbf2-d44e3dadb266"/>
+				<text><![CDATA[AMOUNT]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="390" splitType="Stretch">
+			<staticText>
+				<reportElement x="180" y="42" width="120" height="20" forecolor="#009999" uuid="14caa8db-22c0-4e7b-b253-6780e4761558"/>
+				<textElement>
+					<font size="16"/>
+				</textElement>
+				<text><![CDATA[CLIV]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="0" y="17" width="137" height="20" uuid="904d542a-946c-47d9-8b3f-1841c5a8f377"/>
+				<textFieldExpression><![CDATA[Current meter consumption]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="47" width="137" height="20" uuid="e8b5253e-b027-48d9-8a5a-25121b1d40e7"/>
+				<textFieldExpression><![CDATA[Previous meter consumption]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="77" width="137" height="20" uuid="16d10452-38a5-46c5-8949-a2b29854501b"/>
+				<textFieldExpression><![CDATA[Energy consumed]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="107" width="137" height="20" uuid="cc19f734-6f1c-4fbb-baac-1e7f14ad89a0"/>
+				<textFieldExpression><![CDATA[Tariff 1]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="137" width="137" height="20" uuid="838a1697-b13a-4fc2-8251-5732783130fb"/>
+				<textFieldExpression><![CDATA[Tariff 2]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="168" width="137" height="20" uuid="f21dc1a7-08ad-452a-9403-6b550f2f079a"/>
+				<textFieldExpression><![CDATA[Others]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="198" width="137" height="20" uuid="2b4bddc2-35e6-4f1e-9617-e11542b8f9f2"/>
+				<textFieldExpression><![CDATA[Meter rent]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="229" width="137" height="20" uuid="b70359ff-1774-428d-9322-7f2d731a9047"/>
+				<textFieldExpression><![CDATA[Total Bill without tax]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="259" width="137" height="16" uuid="540f962f-d24a-444d-9908-4fba77816c51"/>
+				<textFieldExpression><![CDATA[VAT meter rent]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="286" width="137" height="20" uuid="c5d23be0-eeff-4348-b5e3-e13e72b8ba1c"/>
+				<textFieldExpression><![CDATA[TAX (1.25%)]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="0" y="316" width="137" height="20" uuid="867451a9-d9f1-403b-b5f4-31cfa103676f"/>
+				<textFieldExpression><![CDATA[With TAX]]></textFieldExpression>
+			</textField>
+			<ellipse>
+				<reportElement x="0" y="358" width="660" height="20" forecolor="#CCCC00" backcolor="#009999" uuid="cca0029e-d5ba-40fd-b131-357cfc07d5fc"/>
+			</ellipse>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

@@ -159,4 +159,22 @@ public class ConsumptionDAO implements IConsumption{
        return null;
     }
     
+    public Consumption findone(String value) {
+        
+         Session session = Factory.openSession();
+         Transaction t = null;
+         
+         try {
+             t = session.beginTransaction();
+             Consumption cl = (Consumption)session.createQuery("From Consumption WHERE date = ?").setString(0, value).uniqueResult();
+             return cl;
+        } catch (HibernateException e) {
+            if(t!=null) t.rollback();
+            e.printStackTrace();
+        }finally{
+             session.close();
+         }
+        return null;
+    }
+    
 }
